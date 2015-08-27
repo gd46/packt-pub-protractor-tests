@@ -25,7 +25,21 @@ describe("Download the book of the day", function(){
         assert.isTrue(isPresent, "The login form should have poped up");
         done();
       }
-    })
-  })
+    });
+  });
   
+  it("should redirect user to the book of the day page", function(done){
+    page.gotoFreeLearningPage();
+    assert.eventually.equal(browser.getCurrentUrl(), browser.baseUrl + 'packt/offers/free-learning');
+    done();
+  });
+  
+  it("should allow user to claim the book of the day", function(done){
+    page.claimBookOfDay(function(text){
+      page.getFirstBookInList(function(title){
+        console.log(title);
+      })
+    });
+    done();
+  });
 });
