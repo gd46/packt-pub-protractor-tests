@@ -4,10 +4,9 @@ var BookPage = (function(){
   
   function BookPage(){
     this.loginButton = element(by.xpath("//*[@class='login-popup']"));
-    this.loginForm = element(by.id("account-bar-form-login"));
-    this.emailField = element(by.id("email"));
-    this.passwordField = element(by.id("password"));
-    this.submitButton = element(by.xpath("//*[@class='login-popup']"));
+    this.emailField = element.all(by.id("email")).get(1);
+    this.passwordField = element.all(by.id("password")).get(1);
+    this.submitButton = element.all(by.id("login-form-submit")).get(1);
   }
   
   BookPage.prototype.gotoLogin = function(){
@@ -16,11 +15,14 @@ var BookPage = (function(){
   }
   
   BookPage.prototype.gotoLoginForm = function(cb) {
-    this.loginButton.click();
-    browser.sleep(5000);
-    this.emailField.isPresent().then(function(isPresent){
-      return cb(isPresent);
-    });
+    var self = this;
+    this.loginButton.click().then(function(){
+      browser.sleep(2000);
+      self.emailField.isPresent().then(function(isPresent){
+        return cb(isPresent);
+      });
+    })
+    
   }
   
   BookPage.prototype.signIn = function() {
