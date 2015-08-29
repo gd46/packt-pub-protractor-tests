@@ -9,7 +9,7 @@ var BookPage = (function(){
     this.submitButton = element.all(by.id("login-form-submit")).get(1);
     this.freeLearningLink = element(by.xpath("//*[@id='main-carousel']/div/div/div[1]/div/div[2]/div/div[4]/div/span"));
     this.bookOfTheDayPage = element(by.xpath("//*[@id='20585']/div/div[1]/div[2]"));
-    this.bookOfTheDay = element(by.xpath("input[@type='submit']"));
+    this.bookOfTheDay = element(by.xpath("//*[@id='deal-of-the-day']/div/div/div[2]/div[4]/div[2]/a")).getAttribute('href');
     this.bookOfTheDayTitle = element(by.css(".dotd-title"));
     this.listEbooks = element.all(by.css(".product-line unseen"));
   }
@@ -47,14 +47,25 @@ var BookPage = (function(){
   }
   
   BookPage.prototype.claimBookOfDay = function(cb) {
-    browser.actions().mouseMove(this.bookOfTheDay).perform();
+    browser.actions().mouseMove(this.bookOfTheDayTitle).perform();
     browser.sleep(2000);
     this.bookOfTheDayTitle.getText().then(function(text){
-      browser.sleep(2000);
-      this.bookOfTheDay.click();
-      browser.sleep(5000);
-      return cb(text);
-    });
+      this.bookOfTheDay.then(function(href){
+        browser.get(href);
+        browser.sleep(5000);
+        return cb(text);
+      });
+    })
+//    this.bookOfTheDay.then(function(href){
+//      browser.get(href);
+//      browser.sleep(5000);
+//    });
+//    this.bookOfTheDayTitle.getText().then(function(text){
+//      browser.sleep(2000);
+//      this.bookOfTheDay.click();
+//      browser.sleep(5000);
+//      return cb(text);
+//    });
   }
   
   BookPage.prototype.getFirstBookInList = function(cb) {

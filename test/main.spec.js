@@ -36,6 +36,8 @@ describe("Download the book of the day", function(){
   
   it("should allow user to claim the book of the day", function(done){
     page.claimBookOfDay(function(text){
+      var self = this;
+      var text = self.text;
       page.getFirstBookInList(function(title){
         console.log(text);
         console.log(title);
